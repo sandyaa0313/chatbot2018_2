@@ -42,6 +42,13 @@ class TocMachine(GraphMachine):
             if 'text' in event['message']:
                 text = event['message']['text']
                 return text.lower() == 'give me a hug'
+        return False
+
+    def is_going_to_test(self, event):
+        if event.get("message"):
+            if 'text' in event['message']:
+                text = event['message']['text']
+                return text.lower() == 'auther'
         return False    
 
     def is_going_to_state2(self, event):
@@ -132,7 +139,17 @@ class TocMachine(GraphMachine):
         self.go_back()
 
     def on_exit_contact(self):
-        print('Leaving state contact')    
+        print('Leaving state contact')
+
+    def on_enter_test(self,event):
+        print("I'm entering state test")
+
+        sender_id = event['sender']['id']
+        send_text_message(sender_id,"yishuan")
+        self.go_back()
+
+    def on_exit_test(self):
+        print('Leaving state test')    
 
     def on_enter_intro(self,event):
         print("I'm entering state intro")
